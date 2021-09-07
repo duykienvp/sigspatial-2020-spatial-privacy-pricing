@@ -1,4 +1,5 @@
-# Base module of Privacy-Utility-Price project
+# Code for SIGSPATIAL 2020 paper on Spatial Privacy Pricing
+Paper: Spatial Privacy Pricing: The Interplay between Privacy, Utility and Price in Geo-Marketplaces (https://dl.acm.org/doi/10.1145/3397536.3422213)
 
 ## Getting Started
 1. Dependency
