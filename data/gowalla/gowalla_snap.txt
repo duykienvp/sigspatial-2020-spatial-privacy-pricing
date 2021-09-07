@@ -1,0 +1,1 @@
+/Users/kiennd/Downloads/location_datasets/loc-gowalla_totalCheckins.txt

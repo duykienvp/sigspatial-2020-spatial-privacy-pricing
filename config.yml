@@ -1,0 +1,80 @@
+project_dir: /Users/kiennd/git/kien-privacy-utility-price/sigspatial2020  # all others dir/files are inside this directory
+
+data:
+  data_dir: data/gowalla     # data directory inside the project directory
+  data_file: gowalla_snap_LA_1_checkin.csv  # gowalla_LA.csv  # data file
+  dataset_type: gowalla      # dataset type (for input file parsing)
+
+output:
+  output_dir: output/current/  # output directory
+  output_file: output.csv    # output file (inside output directory)
+
+  # the following directories are inside output directory
+  content_dir: content  # output directory for distributions
+  output_costs_prefix: output_costs  # output prefix for costs file
+  output_distributions_prefix: output_distributions  # output prefix for distributions file
+  output_prices_prefix: output_prices  # output prefix for price file
+  output_center_edge_probs_prefix: output_center_edge_probs  # output prefix for center and edge probs file
+
+checkin_selection_random_seed: 1               # fixed random seed, it is used to select checkins of users
+parallel: True              # run in parallel or not
+parallel_num_cpu: -1        # number of cpus if running in parallel
+
+evaluation:
+  area_code: los_angeles     # see constants.py for the boundary info. Default is global
+  num_checkins_per_user: 1   # max number of check-ins per user, -1 for unlimited
+
+  grid_cell_len_x: 5000      # length of a cell in x dimension, each cell is a region for evaluation
+  grid_cell_len_y: 5000      # length of a cell in y dimension, each cell is a region for evaluation
+  grid_boundary_order: 5000  # extend the max/min coordinates to the nearest boundary_order
+
+  decision_making_eval:
+    linear_profit_profit_per_user: 100  # profit per user in linear profit eval
+    opening_threshold: 400   # threshold of number of users for saying that a location is popular
+
+method_specific:
+  find_actual_count: False  # whether or not we use eval metric stopping condition or find the actual count, usually no
+  fmc_budget_from_cost_percentage: -1  # the percentage of opcost used as the budget, put <=0 if use `budget` param
+  fmc_budget_from_probing: True  # the percentage of opcost used as the budget, put <=0 if use `budget` param
+  budget: inf                # maximum budget to spend on buying data, inf (i.e. infinite) for unlimited
+  start_price: 0.001         # starting price to buy.
+  probing:
+    algorithm: SIP         # algorithm for probing: POI, SIP
+    extended_cell_sigma_factor: 2  # the factor of sigma that we extend the cell
+    price_increment_factor: 2    # factor to increase buying price for each round
+    should_check_inout: False   # for SIP-T: to check inside/outside condition
+
+    should_check_only_one_next_price: False   # for SIP to check only next 1 price or multiple next prices
+
+    # Should keep this default
+    parallel_find_best_buying_action: True
+    buy_singly: True        # buying data points singly or all at once
+    probability_stopping: False  # stopping condition of BASIC is probability or distance
+
+    quantization_len: 100      # length of each part when we do quantization
+
+  # Should keep this default
+  final_probs_filter_type: ZERO  # the type of filter to remove probabilities after buying a set of data
+
+privacy_distributions:       # distributions for privacy concerns of users
+  should_random: True      # True then randomize; False then use the mean
+  dist_user_privacy_level:   # distribution of privacy level of each user (i.e. per user)
+    type: uniform
+    loc: 0
+    scale: 3
+    random_seed: 2
+  dist_user_loc_sensitivity: # distribution of sensitivity of a location (i.e. per data point)
+    type: uniform
+    loc: 0
+    scale: 3
+    random_seed: 3
+
+price_from_noise_func:
+  rate: 1                    # decay; this value will be used as rate in exp(-rate) component
+
+standard_deviation_from_noise_func:
+  initial_value: 50          # initial value when the input value is approximately 0
+  rate: 1                    # grow rate; this value will be used as rate in exp(rate) component
+
+free_data_price_threshold: 0  # if data is bought at a price no more than this, data is free. 0 is not free
+

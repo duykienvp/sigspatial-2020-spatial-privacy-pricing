@@ -1,0 +1,5 @@
+PyYAML
+jupyter
+matplotlib
+numpy
+scipy
