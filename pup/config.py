@@ -75,7 +75,6 @@ class Config(object):
     eval_grid_boundary_order = None
 
     # payoff matrix
-    payoff_matrix_type = None
     linear_profit_profit_per_user = None
     linear_profit_fixed_cost = None
 
@@ -206,11 +205,6 @@ class Config(object):
 
                     if 'decision_making_eval' in evaluation_cfg:
                         decision_making_eval_cfg = evaluation_cfg['decision_making_eval']
-
-                        # payoff matrix
-                        if 'payoff_matrix_type' in decision_making_eval_cfg:
-                            Config.payoff_matrix_type = PayoffMatrixType[
-                                decision_making_eval_cfg['payoff_matrix_type'].upper()]
 
                         if 'opening_threshold' in decision_making_eval_cfg:
                             Config.eval_opening_threshold = float(decision_making_eval_cfg['opening_threshold'])

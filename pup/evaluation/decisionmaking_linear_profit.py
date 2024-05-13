@@ -102,7 +102,7 @@ def make_opening_decision_multiple_regions(
     # action = 1 : cancel
     grid_shape = expected_num_users.shape
 
-    decision_grid = np.zeros(grid_shape, dtype=np.int)
+    decision_grid = np.zeros(grid_shape, dtype=np.int64)
     for x_idx in range(grid_shape[0]):
         for y_idx in range(grid_shape[1]):
             decision, expected_value = make_opening_decision_single_region(

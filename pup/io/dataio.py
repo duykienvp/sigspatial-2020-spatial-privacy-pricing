@@ -8,7 +8,7 @@ import ntpath
 import os
 from collections import defaultdict
 from datetime import datetime
-from typing import List
+from typing import List, Tuple
 
 import numpy as np
 from scipy.stats import rv_discrete, norm
@@ -205,8 +205,7 @@ def prepare_content_dir() -> str:
     fixed_cost = get_linear_profit_fixed_cost()
 
     content_dir = os.path.join(content_dir,
-                               'payoff_{}'.format(Config.payoff_matrix_type.name)
-                               + '_profit_per_user_{}'.format(int(Config.linear_profit_profit_per_user))
+                               '_profit_per_user_{}'.format(int(Config.linear_profit_profit_per_user))
                                + '_fixed_cost_{}'.format(int(fixed_cost))
                                + '_pop_threshold_' + str(int(opening_threshold)))
 
@@ -244,7 +243,7 @@ def prepare_output_file_name(prefix: str, method: MethodType) -> str:
         if Config.start_price > 0:
             file_name += '_start_price_{0:.4f}'.format(Config.start_price)
         else:
-            file_name += '_start_std_ratio_{0:.2f}'.format(Config.start_std_ratio)
+            file_name += '_start_std_ratio_{0:.2f}'.format(Config.start_std_ratio if Config.start_std_ratio else 0)
         file_name += '_extended_std_factor_{0:.2f}'.format(Config.probing_extended_cell_sigma_factor)
         file_name += '_price_increment_factor_{0:.2f}'.format(Config.probing_price_increment_factor)
         file_name += '_check_inout_{}'.format(Config.probing_should_check_inout)
@@ -445,7 +444,7 @@ def write_center_edge_probs(method: MethodType, center_probs: dict, edge_probs: 
             csv_writer.writerow(row)
 
 
-def read_center_edge_probs(method: MethodType) -> (dict, dict):
+def read_center_edge_probs(method: MethodType) -> Tuple[dict, dict]:
     """ Read center and edger probabilities from file.
     Input format: Each line:
     std_step center_prob edge_prob
@@ -545,7 +544,7 @@ def write_output_evaluations(method,
             csv_writer = csv.writer(f, delimiter='\t')
             header = [
                 'time',
-                'data_file', 'random_seed', 'payoff_matrix_type',
+                'data_file', 'random_seed',
                 'profit_per_user', 'fixed_cost',
                 'area_code', 'num_checkins_per_user',
                 'opening_threshold', 'grid_cell_len', 'grid_boundary_order',
@@ -592,7 +591,6 @@ def write_output_evaluations(method,
             datetime.strftime(datetime.now(), '%Y-%m-%d %H:%M:%S.%f'),
             ntpath.basename(Config.data_file),
             '{}'.format(Config.checkin_selection_random_seed),
-            '{}'.format(Config.payoff_matrix_type.name),
             '{}'.format(int(Config.linear_profit_profit_per_user)),
             '{}'.format(int(fixed_cost)),
             '{}'.format(Config.eval_area_code.name),
@@ -623,9 +621,9 @@ def write_output_evaluations(method,
             '{}'.format(Config.probing_should_check_only_one_next_price),
             '{}'.format(Config.probing_quantization_len),
             '{}'.format(Config.probing_extended_cell_sigma_factor),
-            '{0:.3f}'.format(Config.start_std_ratio),
+            '{0:.3f}'.format(Config.start_std_ratio if Config.start_std_ratio else 0),
             '{0:.4f}'.format(Config.start_price),
-            '{0:.3f}'.format(Config.probing_point_inside_stop_threshold),
+            '{0:.3f}'.format(Config.probing_point_inside_stop_threshold if Config.probing_point_inside_stop_threshold else 0),
             '{}'.format(Config.final_probs_filter_type.name),
             '{}'.format(num_users),
             '{}'.format(num_data_points),

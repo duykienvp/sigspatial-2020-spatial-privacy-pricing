@@ -1,4 +1,4 @@
-project_dir: /Users/kiennd/git/kien-privacy-utility-price/sigspatial2020  # all others dir/files are inside this directory
+project_dir: /Users/kiennd/git/sigspatial-2020-spatial-privacy-pricing  # all others dir/files are inside this directory
 
 data:
   data_dir: data/gowalla     # data directory inside the project directory
